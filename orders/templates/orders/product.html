@@ -1,0 +1,24 @@
+{% extends "orders/layout.html" %}
+
+{% block title %}
+	{{ product.name }}
+{% endblock %}
+
+{% block body %}
+	<h1>{{ product.name }}</h1>
+	<p>{{ product.price }}</p>
+	<img src="{{ product.picture }}" alt="{{ product.name }}">
+
+	<h2>Reveiws</h2>
+	<ul>
+		{% for review in reviews %}
+		<li>
+			<p>{{ review.score }}</p>
+			<p>{{ review.text }}</p>
+			<p>{{ review.first }}</p>
+			<p></p>
+		</li>
+		{% endfor%}
+	</ul>
+
+{% endblock %}
