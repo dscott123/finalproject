@@ -1,4 +1,4 @@
-{% extends "orders/layout.html" %}
+{% extends "registration/layout.html" %}
 
 {% block title %}
 	appName
@@ -8,7 +8,8 @@
 	<ul>
 		{% for product in products %}
 		<li>
-			<a href="{% url 'product' product.id %}">{{ product.name }}</a>
+			<a href="{% url 'product' product.id %}">{{ product.name }}</a><br>
+			<img src="{{ product.picture.url }}" alt="{{ product.name }}" style="width:200px;" href="{% url 'product' product.id %}">
 		</li>
 		{% endfor %}
 	</ul>

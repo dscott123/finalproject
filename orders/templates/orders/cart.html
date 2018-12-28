@@ -1,0 +1,91 @@
+{% extends "registration/layout.html" %}
+
+{% block title %}
+	appName
+{% endblock %}
+
+{% block body %}
+	<a>
+		<p>Name: {{ user.first_name }} {{ user.last_name }}</p>
+		{% if user.account %}
+			<p>Current balance: ${{ user.account.money }}</p>
+			<p>
+				My Cart:
+				{% if cart %}
+				<ul>
+					{% for product in cart %}
+						
+						<li>
+							{{ product.product.name }}: ${{ product.product.price }}
+							{% if product.amount > 1 %}
+								({{ product.amount }})
+							{% endif %}
+							<form action="{% url 'remove' %}" method="post">
+								{% csrf_token %}
+								<input type="hidden" name="product" value="{{ product.product.id }}">
+								<input type="number" name="amount" min="1" max="{{ product.amount }}"value="1">
+								<input type="hidden" name="remove_all" value="no">
+								<button type="submit">Remove</button>
+							</form>
+						</li>
+						
+					{% endfor %}
+				</ul>
+				
+
+				<p>Total: ${{ price }}</p>
+				<p>Final Balance: ${{ final_money }}</p>
+				<form action="{% url 'remove' %}" method="post">
+					{% csrf_token %}
+					<input type="hidden" name="product" value="{{ product.product.id }}">
+					<input type="hidden" name="remove_all" value="yes">
+					<button type="submit">Empty Cart</button>
+				</form><br>
+				<form action="/checkout/" method="post">
+					{% csrf_token %}
+				<input type="hidden" name="price" value="{{ price }}">
+				<button type="submit">Check Out</button>
+				</form>
+				{% if success == False %}
+				<p style="color:red">Insuficent funds</p>
+				{% endif %}
+				{% else %}
+				<ul>
+					<li>
+						Empty
+					</li>
+				</ul>
+				{% endif %}
+			</p>
+				
+				
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		{% else %}
+			<p><a href="{% url 'create' %}">No account. Make one here!</p>
+		{% endif %}
+		
+	</a>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "registration/layout.html" %}
+
+{% block title %}
+	appName
+{% endblock %}
+
+{% block body %}
+	<a>
+		<form action="{% url 'change_name' %}" method="post">
+			{% csrf_token %}
+			First name:<br>
+			<input type="text" name="firstname" value="{{ user.first_name }}"><br>
+			Last name:<br>
+			<input type="text" name="lastname" value="{{ user.last_name }}"><br>
+			Email:<br>
+			<input type="email" name="email" value="{{ user.email }}"><br><br>
+			<button type="submit">Confirm changes</button>
+		</form>
+	</a>
+{% endblock %}

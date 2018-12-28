@@ -1,0 +1,48 @@
+{% extends "registration/layout.html" %}
+
+{% block title %}
+	appName
+{% endblock %}
+
+{% block body %}
+	<a>
+		<p>Username: {{ user.username }}</p>
+		{% if user.first_name %}
+		<p>Name: {{ user.first_name }} {{ user.last_name }}</p>
+			{% if not user.email %}
+				<p>Email: No email <a href="{% url 'name' %}">Set up your email here!</a></p>
+			{% else %}
+				<p>Email: {{ user.email }}</p>
+			{% endif %}
+		{% else %}
+		<p><a href="{% url 'name' %}"> Enter your name and/or email here!</a></p>
+		{% endif %}
+		
+		{% if user.account %}
+			<p>Account balance: ${{ user.account.money }}</p>
+			<a href="{% url 'money' %}">Get Money here</a><br>
+			<a href="{% url 'name' %}">Edit account information here</a>
+		{% else %}
+			<p><a href="{% url 'create' %}">No account. Make one here!</a></p>
+		{% endif %}
+		<br>
+		<br>
+		<h3>Inventory</h3>
+		<br>
+		{% for items in inventory %}
+		<li>
+			<a>{{ items.product.name }}</a>
+			{% if items.amount > 1 %}
+				<a>({{ items.amount }})</a>
+			{% endif %}
+			<br>
+			<img src="{{ items.product.picture.url }}" alt="{{ items.product.name }}" style="width:200px;">
+		</li>
+		{% endfor %}
+		{% if not inventory %}
+		<li>
+			Empty
+		</li>
+		{% endif %}
+	</a>
+{% endblock %}
