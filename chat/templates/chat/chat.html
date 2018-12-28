@@ -1,0 +1,19 @@
+{% extends "registration/layout.html" %}
+
+{% block body %}
+  {% load staticfiles %}
+  <script type="text/javascript" src='{% static "scripts.js" %}'></script>
+  <script type="text/javascript" src='{% static "jquery-1.12.1.min.js" %}'></script>
+  <script type="text/javascript" src='{% static "reconnecting-websocket.min.js" %}'></script>
+<h3>Click a room to join!</h3>
+<h3>Click again to leave.</h3>
+<ul class="rooms">
+  {% for room in rooms %}
+    <li class="room-link" data-room-id="{{ room.id }}">{{ room }}</li>
+  {% empty %}
+    <p class="empty"><a href="/admin/">No chat rooms defined.</a></p>
+  {% endfor %}
+</ul>
+<div id="chats">
+</div>
+{% endblock body %}

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -33,12 +34,14 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'orders.apps.OrdersConfig',
     'chat.apps.ChatConfig',
+    'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -56,7 +59,7 @@ ROOT_URLCONF = 'final.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -116,7 +119,57 @@ USE_L10N = True
 USE_TZ = True
 
 
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+
+ASGI_APPLICATION = 'final.routing.application'
+
+redis_host = os.environ.get('REDIS_HOST', '127.0.0.1')
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [(redis_host, 6379)],
+        },
+    },
+}
+
+NOTIFY_USERS_ON_ENTER_OR_LEAVE_ROOMS = True
+
+MSG_TYPE_MESSAGE = 0  # For standard messages
+MSG_TYPE_WARNING = 1  # For yellow messages
+MSG_TYPE_ALERT = 2  # For red & dangerous alerts
+MSG_TYPE_MUTED = 3  # For just OK information that doesn't bother users
+MSG_TYPE_ENTER = 4  # For just OK information that doesn't bother users
+MSG_TYPE_LEAVE = 5  # For just OK information that doesn't bother users
+
+MESSAGE_TYPES_CHOICES = (
+    (MSG_TYPE_MESSAGE, 'MESSAGE'),
+    (MSG_TYPE_WARNING, 'WARNING'),
+    (MSG_TYPE_ALERT, 'ALERT'),
+    (MSG_TYPE_MUTED, 'MUTED'),
+    (MSG_TYPE_ENTER, 'ENTER'),
+    (MSG_TYPE_LEAVE, 'LEAVE'),
+)
+
+MESSAGE_TYPES_LIST = [
+    MSG_TYPE_MESSAGE,
+    MSG_TYPE_WARNING,
+    MSG_TYPE_ALERT,
+    MSG_TYPE_MUTED,
+    MSG_TYPE_ENTER,
+    MSG_TYPE_LEAVE,
+]
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),    
+]
+
+MEDIA_ROOT  = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
