@@ -71,8 +71,12 @@ $(function() {
 
             msgdiv.append(ok_msg);
             x = $("#room-" + data.room + " .message").length
+            y = $("#room-" + data.room + " .contextual-message").length
             if (x > 20) {
                 $("#room-" + data.room + " .message:first").remove();
+            }
+            if (x + y > 21) {
+                $("#room-" + data.room + " .contextual-message:first").remove();
             }
             msgdiv.scrollTop(msgdiv.prop('scrollHeight'));
         }
