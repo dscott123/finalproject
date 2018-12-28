@@ -1,3 +1,3 @@
-# Project 3
+# Project Final
 
 Web Programming with Python and JavaScript
